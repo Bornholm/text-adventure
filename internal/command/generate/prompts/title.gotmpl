@@ -1,0 +1,15 @@
+Trouve un titre pour un livre en respectant le contexte scénaristique suivant:
+
+{{ .Story }}
+
+Le titre doit être court et accrocheur, sans mise en form. Tu ne dois écrire que le titre proposé sans autre texte.
+
+Utilise la langue {{ .Language }} pour écrire le texte.
+
+{{ if .Authors }}
+Écris en imitant le style de {{range $index, $page := .Authors}}{{if not (eq $index 0)}}, {{ end}}{{.}}{{ end }}
+{{ end }}
+
+Voici le contenu de la première page du livre, inspire toi en:
+
+{{ .FirstPage }}

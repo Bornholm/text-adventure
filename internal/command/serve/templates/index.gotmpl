@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Text Adventures</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body class="grimoire">
+    <h1>Bibliothèque</h1>
+    <div class="books">
+      {{ range.Books }}
+      <div
+        class="book"
+        style="background-image: url('/{{ .Name }}/cover.png')"
+        onClick="window.location = '/{{ .Name }}/p/1'"
+      >
+        <a
+          class="title"
+          href="/{{ .Name }}/p/1"
+          title="Commencer la lecture"
+          >{{ .Title }}</a
+        >
+        <div class="spacer"></div>
+        <div class="info">
+          <span>En {{ .Language }}</span>
+          <span>Par {{ .Model }}</span>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </body>
+</html>

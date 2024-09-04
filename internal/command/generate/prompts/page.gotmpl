@@ -1,0 +1,34 @@
+Écris la page {{ .Page }} en respectant le contexte général scénaristique suivant:
+
+{{ .Story }}
+
+---
+
+{{ if .Parent }}
+L'histoire devra être dans la continuité de cette page d'origine:
+
+{{ .Parent }}
+{{end}}
+
+---
+
+{{ if .Children }}
+La page doit offrir le choix vers les pages {{range $index, $page := .Children}}{{if not (eq $index 0)}}, {{ end}}{{.}}{{ end }}.
+{{ else }}
+L'histoire devrait se terminer sur cette page.
+{{ end }}
+
+Utilise la langue {{ .Language }} pour écrire le texte.
+
+{{ if .Authors }}
+Écris en imitant le style de {{range $index, $page := .Authors}}{{if not (eq $index 0)}}, {{ end}}{{.}}{{ end }}
+{{ end }}
+
+Tu dois seulement écrire le contenu de cette page et d'aucune autre.
+
+Tu dois écrire le contenu au format texte brut, sans mise en gras ou listes à puces ou autres blocs de texte structuré. 
+
+Les liens de navigation vers les nouvelles pages doivent être au format `[texte](numéro_page)`. 
+
+N'inclue pas de lien si l'histoire s'arrête sur cette page.
+

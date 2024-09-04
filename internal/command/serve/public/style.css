@@ -1,0 +1,111 @@
+.grimoire {
+  max-width: 960px;
+  margin: 50px auto;
+  padding: 40px;
+  background-color: #fff9e6;
+  border: 2px solid #a67c52;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  background-size: cover;
+  line-height: 1.6;
+}
+
+body {
+  background-color: #f4e9d8;
+  font-family: "Garamond", serif;
+  color: #3e2a1c;
+  margin: 0;
+  padding: 0;
+}
+
+.grimoire h1 {
+  font-size: 36px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  margin-bottom: 20px;
+  color: #7b3f00;
+  text-shadow: 2px 2px #dcc6a0;
+}
+
+.grimoire p {
+  font-size: 18px;
+  text-align: justify;
+  margin-bottom: 20px;
+  text-indent: 30px;
+}
+
+.grimoire::before,
+.grimoire::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+body::before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.books {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.books > .book {
+  display: flex;
+  text-align: center;
+  aspect-ratio: 3 / 4;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid #a67c52;
+  border-radius: 5px;
+  background-color: #fff9e6;
+  flex: 1 0 32%;
+  max-width: 32%;
+  width: 0;
+  background-position: center;
+  background-size: cover;
+  padding-top: 60px;
+  padding-bottom: 20px;
+  cursor: pointer;
+}
+
+.books > .book:hover {
+  box-shadow: 3px 3px 5px #616161;
+}
+
+.books > .book > .title {
+  color: white;
+  font-size: 1.5em;
+  background-color: #362e2e7d;
+  text-decoration: none;
+}
+
+.books > .book > .spacer {
+  flex: 1;
+}
+
+.books > .book > .info {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  background-color: #362e2e7d;
+  padding: 5px 10px;
+  width: 50%;
+  justify-self: flex-end;
+}
