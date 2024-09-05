@@ -15,6 +15,7 @@ import (
 	"path/filepath"
 	"time"
 
+	sloghttp "github.com/samber/slog-http"
 	"github.com/urfave/cli/v2"
 	"github.com/yuin/goldmark"
 )
@@ -66,7 +67,9 @@ func BookCommand() *cli.Command {
 
 			mux.Handle("GET /", handlePublic)
 
-			if err := http.ListenAndServe(":3000", mux); err != nil {
+			handler := sloghttp.New(slog.Default())(mux)
+
+			if err := http.ListenAndServe(":3000", handler); err != nil {
 				return err
 			}
 
