@@ -4,30 +4,40 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Text Adventures</title>
+    <link rel="stylesheet" href="/bulma.min.css" />
     <link rel="stylesheet" href="/style.css" />
   </head>
-  <body class="grimoire">
-    <h1>Bibliothèque</h1>
-    <div class="books">
-      {{ range.Books }}
-      <div
-        class="book"
-        style="background-image: url('/{{ .Name }}/cover.png')"
-        onClick="window.location = '/{{ .Name }}/p/1'"
-      >
-        <a
-          class="title"
-          href="/{{ .Name }}/p/1"
-          title="Commencer la lecture"
-          >{{ .Title }}</a
-        >
-        <div class="spacer"></div>
-        <div class="info">
-          <span>En {{ .Language }}</span>
-          <span>Par {{ .Model }}</span>
+  <body>
+    <section class="section">
+      <div class="container">
+        <h1 class="title is-size-1">Library</h1>
+        <div class="columns is-multiline">
+          {{ range.Books }}
+          <div class="column is-4">
+            <a
+              class="book-cover is-flex is-justify-content-flex-start has-text-centered is-flex-direction-column"
+              href="/{{ .Name }}/p/1"
+              style="background-image: url('/{{ .Name }}/cover.png');"
+            >
+              <h2
+                class="px-3 py-2 title is-uppercase is-size-5 book-cover-text has-text-white"
+                href="/{{ .Name }}/p/1"
+                title="Start to read"
+              >
+                {{ .Title }}
+              </h2>
+              <div class="is-flex-grow-1"></div>
+              <div
+                class="book-cover-text is-family-secondary is-italic is-size-6 is-flex subtitle has-text-white is-justify-content-center is-flex-direction-column"
+              >
+                <span>In {{ .Language }}</span>
+                <span>By {{ .Model }}</span>
+              </div>
+            </a>
+          </div>
+          {{ end }}
         </div>
       </div>
-      {{ end }}
-    </div>
+    </section>
   </body>
 </html>

@@ -3,14 +3,27 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Book</title>
+    <title>{{ .Book.Title }} | Book</title>
+    <link rel="stylesheet" href="/bulma.min.css" />
     <link rel="stylesheet" href="/style.css" />
   </head>
-
   <body>
-    <a href="/">Retour à la bibliothèque</a>
-    <div class="grimoire">
-      {{ md .Page }}
-    </div>
+    <section class="section">
+      <div class="container">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <a class="level-item button is-ghost is-small" href="/">↢ Retour à la bibliothèque</a>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <p class="is-italic">{{ .Book.Title }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="content">
+          {{ md .Page }}
+        </div>
+      </div>
+    </section>
   </body>
 </html>

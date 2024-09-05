@@ -49,8 +49,14 @@ func BookCommand() *cli.Command {
 	return &cli.Command{
 		Name:  "book",
 		Usage: "Serve a book",
-		Flags: []cli.Flag{},
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:  "address",
+				Value: ":3000",
+			},
+		},
 		Action: func(ctx *cli.Context) error {
+			address := ctx.String("address")
 
 			mux := http.NewServeMux()
 
@@ -69,7 +75,9 @@ func BookCommand() *cli.Command {
 
 			handler := sloghttp.New(slog.Default())(mux)
 
-			if err := http.ListenAndServe(":3000", handler); err != nil {
+			slog.Info("starting server", slog.Any("address", address))
+
+			if err := http.ListenAndServe(address, handler); err != nil {
 				return err
 			}
 
@@ -87,7 +95,7 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = indexTemplate.Execute(w, struct {
-		Books []Book
+		Books []*Book
 	}{
 		Books: books,
 	})
@@ -102,11 +110,11 @@ func handleCover(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlePage(w http.ResponseWriter, r *http.Request) {
-	book := r.PathValue("book")
+	bookName := r.PathValue("book")
 	pageIndex := r.PathValue("page")
 
 	// TODO Prevent potential path traversal
-	page, err := os.ReadFile(fmt.Sprintf("%s/%s.md", book, pageIndex))
+	page, err := os.ReadFile(fmt.Sprintf("%s/%s.md", bookName, pageIndex))
 	if err != nil {
 		if os.IsNotExist(err) {
 			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
@@ -118,9 +126,23 @@ func handlePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	book, err := loadBook(r.Context(), bookName)
+	if err != nil {
+		if os.IsNotExist(err) {
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+			return
+		}
+
+		slog.Error("could not parse book", slog.Any("error", err))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
 	pageTemplate.Execute(w, struct {
+		Book *Book
 		Page string
 	}{
+		Book: book,
 		Page: string(page),
 	})
 }
@@ -135,30 +157,41 @@ type Book struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
-func loadBooks(ctx context.Context) ([]Book, error) {
+func loadBooks(ctx context.Context) ([]*Book, error) {
 	files, err := filepath.Glob("./*/book.json")
 	if err != nil {
 		return nil, err
 	}
 
-	books := make([]Book, 0, len(files))
+	books := make([]*Book, 0, len(files))
 
 	for _, f := range files {
-		data, err := os.ReadFile(f)
+		dirname := filepath.Dir(f)
+
+		b, err := loadBook(ctx, dirname)
 		if err != nil {
 			return nil, err
 		}
-
-		b := Book{}
-
-		if err := json.Unmarshal(data, &b); err != nil {
-			return nil, err
-		}
-
-		b.Name = filepath.Base(filepath.Dir(f))
 
 		books = append(books, b)
 	}
 
 	return books, nil
+}
+
+func loadBook(ctx context.Context, dirname string) (*Book, error) {
+	data, err := os.ReadFile(filepath.Join(dirname, "book.json"))
+	if err != nil {
+		return nil, err
+	}
+
+	b := &Book{}
+
+	if err := json.Unmarshal(data, &b); err != nil {
+		return nil, err
+	}
+
+	b.Name = dirname
+
+	return b, nil
 }
