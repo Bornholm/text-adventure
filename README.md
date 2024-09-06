@@ -1,5 +1,15 @@
 # Text Adventure
 
+A quick and dirty experiment to build "game-books" with LLMs (OpenAI API for now).
+
+## Demo
+
+[![asciicast](https://asciinema.org/a/AsZhBBWyY5ua1ihZTrgrm58pi.svg)](https://asciinema.org/a/AsZhBBWyY5ua1ihZTrgrm58pi)
+
+Some of the books i've generated are visible here (in french):
+
+https://text-adventure.dev.lookingfora.name/
+
 ## Getting started
 
 ### Generating a new book
