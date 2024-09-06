@@ -97,6 +97,7 @@ func generateCover(ctx context.Context, client *openai.Client, prompt string) er
 		Size:           openai.CreateImageSize1024x1792,
 		Model:          openai.CreateImageModelDallE3,
 		ResponseFormat: openai.CreateImageResponseFormatB64JSON,
+		Style:          "natural",
 		N:              1,
 	}
 

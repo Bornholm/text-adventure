@@ -129,7 +129,7 @@ func BookCommand() *cli.Command {
 						Children: pickPages(remaining, 2),
 					}
 
-					newBranches, err := generateNext(ctx.Context, client, remaining, branch, 2, 4, contextPromptData)
+					newBranches, err := generateNext(ctx.Context, client, remaining, branch, 1, 4, contextPromptData)
 					if err != nil {
 						return err
 					}
